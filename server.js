@@ -10,12 +10,11 @@ const noteRoutes = require("./routes/noteRoutes");
 const app = express();
 
 app.use(cors({
-  origin: "https://notes-app-eta-navy.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
 }));
-
-app.options(/.*/, cors());
 
 app.use(express.json());
 
@@ -24,20 +23,13 @@ app.use((req, res, next) => {
   next();
 });
 
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.log(err));
 
 app.use("/", authRoutes);
 app.use("/", noteRoutes);
 
-const PORT = process.env.PORT || 10000;
-
-mongoose.connect(process.env.MONGO_URI)
-.then(() => {
-  console.log("MongoDB Connected");
-
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-})
-.catch(err => {
-  console.log("MongoDB error:", err);
+app.listen(process.env.PORT, () => {
+    console.log("Server Running");
 });
