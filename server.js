@@ -10,8 +10,6 @@ const noteRoutes = require("./routes/noteRoutes");
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:3000",
   "https://notes-app-eta-navy.vercel.app"
 ];
 
